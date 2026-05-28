@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>@meilinxoxo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink: #0d0014;
+      --bg: #0a0010;
+      --accent: #c77dff;
+      --accent2: #ff6b9d;
+      --glow: #9b5de5;
+      --text: #ede7f6;
+      --muted: #b39ddb;
+      --card-bg: rgba(255,255,255,0.04);
+      --card-border: rgba(199,125,255,0.18);
+    }
+
+    html, body {
+      min-height: 100%;
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    /* ── Animated background ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% -10%, rgba(155,93,229,0.35) 0%, transparent 65%),
+        radial-gradient(ellipse 60% 40% at 80% 80%, rgba(255,107,157,0.18) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 50% at 20% 90%, rgba(90,24,154,0.25) 0%, transparent 60%);
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* Floating orbs */
+    .orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.25;
+      animation: drift 12s ease-in-out infinite;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .orb-1 { width: 300px; height: 300px; background: #9b5de5; top: -60px; left: -80px; animation-delay: 0s; }
+    .orb-2 { width: 200px; height: 200px; background: #ff6b9d; bottom: 5%; right: -40px; animation-delay: -5s; }
+    .orb-3 { width: 150px; height: 150px; background: #c77dff; top: 45%; left: 10%; animation-delay: -8s; }
+
+    @keyframes drift {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      33%       { transform: translate(20px, -30px) scale(1.05); }
+      66%       { transform: translate(-15px, 20px) scale(0.95); }
+    }
+
+    /* ── Page wrapper ── */
+    .page {
+      position: relative;
+      z-index: 1;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 48px 20px 60px;
+      gap: 0;
+    }
+
+    /* ── Ad banner top ── */
+    .ad-top {
+      width: 100%;
+      max-width: 340px;
+      display: flex;
+      justify-content: center;
+      margin-bottom: 32px;
+      min-height: 50px;
+    }
+
+    /* ── Avatar ── */
+    .avatar-wrap {
+      position: relative;
+      margin-bottom: 20px;
+      animation: fadeDown 0.7s ease both;
+    }
+    .avatar-ring {
+      width: 104px; height: 104px;
+      border-radius: 50%;
+      padding: 3px;
+      background: linear-gradient(135deg, #c77dff, #ff6b9d, #9b5de5);
+      box-shadow: 0 0 32px rgba(155,93,229,0.5), 0 0 64px rgba(199,125,255,0.2);
+    }
+    .avatar-ring img {
+      width: 100%; height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      display: block;
+      background: #1a0030;
+    }
+    /* Fallback initials avatar */
+    .avatar-fallback {
+      width: 100%; height: 100%;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #2d0060, #6b0080);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      color: var(--accent);
+      letter-spacing: 2px;
+    }
+    .pulse-dot {
+      position: absolute;
+      bottom: 6px; right: 6px;
+      width: 14px; height: 14px;
+      background: #4cef9a;
+      border-radius: 50%;
+      border: 2px solid var(--bg);
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(76,239,154,0.5); }
+      50%       { box-shadow: 0 0 0 6px rgba(76,239,154,0); }
+    }
+
+    /* ── Name & bio ── */
+    .handle {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.65rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      background: linear-gradient(90deg, #c77dff, #ff6b9d);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: fadeDown 0.7s 0.1s ease both;
+    }
+    .bio {
+      margin-top: 8px;
+      font-size: 0.88rem;
+      color: var(--muted);
+      text-align: center;
+      max-width: 260px;
+      line-height: 1.5;
+      animation: fadeDown 0.7s 0.15s ease both;
+    }
+
+    /* ── Social icons ── */
+    .socials {
+      display: flex;
+      gap: 18px;
+      margin: 18px 0 28px;
+      animation: fadeDown 0.7s 0.2s ease both;
+    }
+    .soc-btn {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      display: flex; align-items: center; justify-content: center;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+      backdrop-filter: blur(8px);
+    }
+    .soc-btn:hover {
+      transform: translateY(-3px) scale(1.1);
+      box-shadow: 0 0 16px rgba(199,125,255,0.4);
+      border-color: var(--accent);
+    }
+    .soc-btn svg { width: 18px; height: 18px; fill: var(--muted); transition: fill 0.2s; }
+    .soc-btn:hover svg { fill: var(--accent); }
+
+    /* ── Section label ── */
+    .section-label {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin: 10px 0 10px;
+      opacity: 0.7;
+      align-self: flex-start;
+      max-width: 340px;
+      width: 100%;
+    }
+
+    /* ── Link cards ── */
+    .links {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      width: 100%;
+      max-width: 340px;
+    }
+
+    .link-card {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 18px;
+      border-radius: 14px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      text-decoration: none;
+      color: var(--text);
+      backdrop-filter: blur(10px);
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+      animation: fadeUp 0.5s ease both;
+      position: relative;
+      overflow: hidden;
+    }
+    .link-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, rgba(199,125,255,0.06), rgba(255,107,157,0.04));
+      opacity: 0;
+      transition: opacity 0.25s;
+    }
+    .link-card:hover {
+      transform: translateY(-2px) scale(1.01);
+      box-shadow: 0 8px 32px rgba(155,93,229,0.25), 0 0 0 1px rgba(199,125,255,0.3);
+      border-color: rgba(199,125,255,0.4);
+    }
+    .link-card:hover::before { opacity: 1; }
+
+    .card-icon {
+      width: 44px; height: 44px; border-radius: 10px;
+      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem;
+    }
+    .card-icon.kofi   { background: linear-gradient(135deg, #1a0040, #3d007a); }
+    .card-icon.fanvue { background: linear-gradient(135deg, #1a0020, #6b003a); }
+    .card-icon.fb     { background: linear-gradient(135deg, #001040, #003090); }
+
+    .card-text { flex: 1; }
+    .card-title {
+      font-size: 0.92rem;
+      font-weight: 500;
+      color: var(--text);
+    }
+    .card-sub {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-top: 1px;
+    }
+
+    .card-arrow {
+      color: var(--muted);
+      font-size: 1rem;
+      transition: transform 0.2s, color 0.2s;
+    }
+    .link-card:hover .card-arrow { transform: translateX(3px); color: var(--accent); }
+
+    /* ── Featured badge ── */
+    .badge {
+      position: absolute;
+      top: 8px; right: 42px;
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      background: linear-gradient(90deg, #9b5de5, #ff6b9d);
+      padding: 2px 7px;
+      border-radius: 20px;
+      color: #fff;
+      font-weight: 600;
+    }
+
+    /* ── Ad mid ── */
+    .ad-mid {
+      width: 100%;
+      max-width: 340px;
+      display: flex;
+      justify-content: center;
+      margin: 20px 0;
+      min-height: 250px;
+    }
+
+    /* ── Ad bottom banner ── */
+    .ad-bottom {
+      width: 100%;
+      max-width: 740px;
+      display: flex;
+      justify-content: center;
+      margin-top: 24px;
+      min-height: 90px;
+    }
+
+    /* ── Footer ── */
+    .footer {
+      margin-top: 36px;
+      font-size: 0.7rem;
+      color: rgba(179,157,219,0.4);
+      text-align: center;
+    }
+
+    /* ── Animations ── */
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .link-card:nth-child(1) { animation-delay: 0.25s; }
+    .link-card:nth-child(2) { animation-delay: 0.35s; }
+    .link-card:nth-child(3) { animation-delay: 0.45s; }
+  </style>
+</head>
+<body>
+
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="orb orb-3"></div>
+
+<div class="page">
+
+  <!-- AD TOP (320x50) -->
+  <div class="ad-top">
+    <script>
+      atOptions = { 'key': '787e84f3bdee3100779130afe4802abc', 'format': 'iframe', 'height': 50, 'width': 320, 'params': {} };
+    </script>
+    <script src="https://www.highperformanceformat.com/787e84f3bdee3100779130afe4802abc/invoke.js"></script>
+  </div>
+
+  <!-- AVATAR -->
+  <div class="avatar-wrap">
+    <div class="avatar-ring">
+      <div class="avatar-fallback">ML</div>
+    </div>
+    <span class="pulse-dot"></span>
+  </div>
+
+  <!-- NAME -->
+  <h1 class="handle">@meilinxoxo</h1>
+  <p class="bio">Únete a mis otras redes y descubre contenido exclusivo 💙🔥</p>
+
+  <!-- SOCIAL ICONS -->
+  <div class="socials">
+    <!-- Instagram -->
+    <a href="#" class="soc-btn" aria-label="Instagram">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+      </svg>
+    </a>
+    <!-- Facebook -->
+    <a href="https://www.facebook.com/share/1Ffds6uau8" target="_blank" class="soc-btn" aria-label="Facebook">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+      </svg>
+    </a>
+    <!-- TikTok -->
+    <a href="#" class="soc-btn" aria-label="TikTok">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/>
+      </svg>
+    </a>
+  </div>
+
+  <!-- LINKS -->
+  <div class="links">
+
+    <!-- Ko-fi -->
+    <a href="https://ko-fi.com/meilinxoxo" target="_blank" class="link-card">
+      <div class="card-icon kofi">☕</div>
+      <div class="card-text">
+        <div class="card-title">Invítame un café 💙</div>
+        <div class="card-sub">Ko-fi · Apóyame directo</div>
+      </div>
+      <span class="card-arrow">›</span>
+    </a>
+
+    <!-- Fanvue -->
+    <a href="https://www.fanvue.com/meilinxoxo" target="_blank" class="link-card">
+      <span class="badge">Exclusivo</span>
+      <div class="card-icon fanvue">🔥</div>
+      <div class="card-text">
+        <div class="card-title">Mei Lin — Fanvue 💙🔥</div>
+        <div class="card-sub">Contenido exclusivo para fans</div>
+      </div>
+      <span class="card-arrow">›</span>
+    </a>
+
+    <!-- Facebook -->
+    <a href="https://www.facebook.com/share/1Ffds6uau8" target="_blank" class="link-card">
+      <div class="card-icon fb">📘</div>
+      <div class="card-text">
+        <div class="card-title">Sígueme en Facebook ❤️</div>
+        <div class="card-sub">@meilinxoxo</div>
+      </div>
+      <span class="card-arrow">›</span>
+    </a>
+
+  </div>
+
+  <!-- AD MID (300x250) -->
+  <div class="ad-mid">
+    <script>
+      atOptions = { 'key': 'c2f164720365b5dc18fae25f1c594072', 'format': 'iframe', 'height': 250, 'width': 300, 'params': {} };
+    </script>
+    <script src="https://www.highperformanceformat.com/c2f164720365b5dc18fae25f1c594072/invoke.js"></script>
+  </div>
+
+  <!-- AD BOTTOM (728x90) — solo se ve bien en desktop -->
+  <div class="ad-bottom">
+    <script>
+      atOptions = { 'key': '0e595827f5881105adfd4a408fcb9f88', 'format': 'iframe', 'height': 90, 'width': 728, 'params': {} };
+    </script>
+    <script src="https://www.highperformanceformat.com/0e595827f5881105adfd4a408fcb9f88/invoke.js"></script>
+  </div>
+
+  <p class="footer">© 2025 @meilinxoxo · All rights reserved</p>
+
+</div>
+</body>
+</html>
